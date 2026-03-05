@@ -1,0 +1,35 @@
+# Backup and archive files
+*.tar.gz
+*.zip
+*.tar
+workspace_backup_*
+
+# Large binary files
+*.xlsx
+*.pptx
+*.docx
+*.pdf
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

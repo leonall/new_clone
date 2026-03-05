@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>下载报告</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        .file-info {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📊</div>
+        <h1>新能源汽车行业竞争格局分析报告</h1>
+        <p class="subtitle">Word 格式 (.docx)</p>
+        
+        <a href="data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,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" download="新能源汽车行业竞争格局分析报告.docx" class="download-btn">
+            ⬇️ 点击下载 Word 报告
+        </a>
+        
+        <div class="file-info">
+            <strong>文件信息</strong><br>
+            文件名：新能源汽车行业竞争格局分析报告.docx<br>
+            大小：约 40 KB<br>
+            格式：Microsoft Word (.docx)
+        </div>
+    </div>
+</body>
+</html>
