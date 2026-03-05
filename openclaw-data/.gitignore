@@ -1,0 +1,20 @@
+# 排除工作空间嵌套仓库
+workspace/
+# 排除会话备份
+*.deleted.*
+*.reset.*
+*.bak-*
+sessions.bak.*/
+# 排除会话记录（可能包含API密钥）
+sessions/
+# 排除其他敏感文件
+credentials/
+openclaw.json
+openclaw.json.bak*
+exec-approvals.json
+delivery-queue/
+telegram/
+media/
+logs/
+*.tmp
+.cache/

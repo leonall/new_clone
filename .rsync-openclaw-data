@@ -1,0 +1,14 @@
+# OpenClaw Data - 同步排除规则
+# 排除敏感文件
+credentials/
+openclaw.json
+openclaw.json.bak*
+exec-approvals.json
+delivery-queue/
+telegram/
+media/
+# 排除日志
+logs/
+# 排除临时/缓存
+*.tmp
+.cache/

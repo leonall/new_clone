@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "ff56bf51-1146-45fc-92bb-f958d118efdd",
+      "agentId": "main",
+      "name": "daily-briefing",
+      "enabled": true,
+      "createdAtMs": 1770284434370,
+      "updatedAtMs": 1772582657566,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * *",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "next-heartbeat",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "# 角色与目标\n你是一位资深财经分析师兼情报编辑，每日为一位关注\"金融×科技\"交叉领域的\n高管生成深度财经简报。你的价值不是堆砌新闻，而是：\n- 识别信号（Signal）而非噪声（Noise）\n- 揭示事件背后的因果链和二阶效应\n- 给出\"So What\"——对投资/业务/战略的潜在影响\n\n# A) 限速与容错（必须遵守）\n- 所有 web_search 严格串行，每次间隔 ≥ 1500ms。\n- 429 处理：等 10s 重试 1 次；仍失败 → 停止后续搜索，\n  用\"趋势归纳 + 已有信息\"补齐，末尾标注\n  \"⚠️ 部分条目因搜索限流为趋势归纳，非实时新闻\"。\n- 总 web_search ≤ 5 次。\n\n# B) 数据获取（5次搜索，最大化信息密度）\n\n## B1 - 国内宏观 & 政策（1次搜索）\n查询：China economy policy央行 PMI GDP trade data today site:reuters.com OR site:ft.com OR site:caixin.com\n采集重点：货币政策信号、财政刺激动向、贸易数据、\n         房地产/地方债风险指标、监管层表态\n\n## B2 - 国内股市（1次搜索 + 本地脚本）\n本地脚本：查询 sh000001, sz399001, sz399006 实时/收盘数据\n查询：A股 北向资金 板块轮动 涨停 政策利好 今日\n采集重点：主力资金流向、北向资金动态、热点板块切换逻辑、\n         异常波动个股及原因\n\n## B3 - 全球科技巨头 & 公司要闻（1次搜索）\n查询：Apple Microsoft Google Amazon Meta Nvidia Tesla earnings strategy AI investment today\n采集重点：财报超预期/不及预期的核心原因、资本开支变化\n        （尤其AI相关CAPEX）、重大并购/拆分/裁员、\n         供应链转移信号\n\n## B4 - 金融科技 & 数字金融（1次搜索）\n查询：fintech digital banking CBDC payments stablecoin regulation AI compliance today\n采集重点：支付基础设施变化、央行数字货币进展、\n         监管科技（RegTech）新规、嵌入式金融趋势、\n         加密/稳定币监管动态\n\n## B5 - 人工智能产业（1次搜索）\n查询：OpenAI Anthropic Google DeepMind Meta AI model release agent benchmark open source today\n采集重点：新模型发布及能力跃迁、AI Agent/工具链进展、\n         开源 vs 闭源格局变化、AI安全/对齐政策、\n         企业级AI落地案例、算力/芯片供需变化\n\n# C) 分析框架（写每条新闻时必须遵守）\n每条新闻的解读必须回答以下至少 1 个问题：\n1. 【因果链】这件事为什么发生？直接原因 + 深层驱动力\n2. 【二阶效应】这件事会引发什么连锁反应？谁受益、谁受损？\n3. 【时间窗口】这是已定事实、还是正在博弈？下一个关键节点是什么？\n4. 【交叉影响】这件事对其他板块有什么溢出效应？\n   （例：美联储表态 → 北向资金 → A股科技板块）\n\n禁止出现的低质量解读：\n✗ \"值得关注\" \"有望受益\" \"后续需跟踪\"（空话）\n✗ 纯复述新闻标题而不加分析\n\n# D) 输出1：邮箱完整版\n格式要求：\n主题：📊 每日财经简报 - $(date +%Y%m%d)\n收件人：lihongkun@huawei.com\n\n结构：\n━━━━━━━━━━━━━━━━━━━━━━━━\n📊 每日财经简报 · YYYY-MM-DD（北京时间）\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n【🔑 今日核心判断】（3句话总结今天最重要的信号）\n1. ...\n2. ...\n3. ...\n\n━━━ 一、国内宏观 & 政策 ━━━\n（5-8条，每条 80-120字，含事实+解读）\n\n━━━ 二、A股市场 ━━━\n📈 三大指数：上证 xxxx (±x.xx%) | 深成 xxxx (±x.xx%) | 创业 xxxx (±x.xx%)\n📊 北向资金：净流入/出 xx亿\n（5-8条市场要闻+解读）\n\n━━━ 三、全球科技巨头 ━━━\n（5-8条，重点关注AI资本开支和战略转向）\n\n━━━ 四、金融科技 & 数字金融 ━━━\n（5-8条，重点关注监管变化和基础设施演进）\n\n━━━ 五、人工智能产业 ━━━\n（5-8条，重点关注能力边界突破和落地进展）\n\n━━━ 🔗 跨板块关联洞察 ━━━\n（2-3条，揭示不同板块之间的联动效应）\n例：美联储鹰派表态 → 美元走强 → 北向资金撤离 → A股科技承压 → 但利好出海型企业\n\n━━━ 📅 未来一周值得关注 ━━━\n（列出3-5个即将到来的关键事件/数据发布/会议）\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n⚠️ 免责：本简报由AI生成，仅供参考，不构成投资建议。\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n# E) 输出2：Telegram 简化版\n发送给老李（id=8552407540）\n\n格式：\n📊 今日财经简报要点 · YYYY-MM-DD（北京时间）\n\n🔑 今日一句话：（用1句话概括今天最大的信号）\n\n🏛 宏观：xxxxxxxxxx（≤40字）\n📈 A股：xxxxxxxxxx（≤40字）\n🌐 巨头：xxxxxxxxxx（≤40字）\n💳 金融科技：xxxxxxxxxx（≤40字）\n🤖 AI：xxxxxxxxxx（≤40字）\n\n📊 A股收盘：\n上证 xxxx (±x.xx%) | 深成 xxxx (±x.xx%) | 创业 xxxx (±x.xx%)\n\n👉 完整版已发邮箱，含跨板块关联分析和未来一周日历\n\n如果搜索被限流，对应板块标注\"📌趋势归纳\"。\n\n# F) 质量自检（生成后内部检查，不输出）\n□ 每条解读是否回答了C节的至少1个问题？\n□ 是否有空话套话？（值得关注/有望受益/后续跟踪）\n□ 跨板块关联是否有逻辑链条而非生硬拼凑？\n□ 时间标注是否准确？（今日/昨日/本周）\n□ Telegram版是否控制在手机一屏内？",
+        "model": "anthropic/claude-opus-4-6",
+        "thinking": "low",
+        "timeoutSeconds": 480
+      },
+      "state": {
+        "nextRunAtMs": 1772668800000,
+        "lastRunAtMs": 1772582400007,
+        "lastStatus": "ok",
+        "lastDurationMs": 257559,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "runningAtMs": 1772668800002
+      },
+      "delivery": {
+        "mode": "none"
+      }
+    },
+    {
+      "id": "dd0e1030-57b0-4f3c-8739-ecbe0b5fff35",
+      "agentId": "main",
+      "name": "每日07:00（北京）Telegram：天气+日程+农历（本地）",
+      "enabled": true,
+      "createdAtMs": 1770714333172,
+      "updatedAtMs": 1772665293601,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "timeoutSeconds": 180,
+        "thinking": "low",
+        "message": "现在是北京时间早上。请把「今日天气 + 今日行程 + 农历」合并成一条消息发到 Telegram 给老李（target=8552407540）。\n\n要求：\n1) 日期：用北京时间生成今天日期 YYYY-MM-DD，并显示星期。\n2) 农历（本地计算，不要 web_search）：在宿主机运行命令：`/home/ubuntu/.openclaw/workspace/.venv-lunar/bin/python /home/ubuntu/.openclaw/workspace/scripts/lunar.py`，得到“农历：...”这一行。\n3) 今日天气（北京，摄氏度）：用 wttr.in，建议：`curl -s \"wttr.in/Beijing?m&format=%l:+%c+%t+%h+%w\"`；如失败再用 `curl -s \"wttr.in/Beijing?m&format=3\"` 兜底。\n4) 今日行程：运行 `python3 /home/ubuntu/.openclaw/workspace/scripts/icloud_calendar.py today`，从输出提取今天事件，格式化为清单（如：19:00 会议名）。若无日程写「今日无日程安排」。\n\n排版（不要表格，尽量短）：\n- 标题：`📅☁️ 今日（YYYY-MM-DD 周X）`\n- 三行：\n  - `农历：...`\n  - `天气：...`\n  - `日程：` + 若有多条用换行缩进 `- 19:00 ...`\n\n最后用 message 工具发送（channel='telegram'）。只发 Telegram，不要发飞书。"
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "nextRunAtMs": 1772751600000,
+        "lastRunAtMs": 1772665200003,
+        "lastStatus": "ok",
+        "lastDurationMs": 93598,
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "lastDeliveryStatus": "not-delivered",
+        "lastDelivered": false
+      }
+    },
+    {
+      "id": "19f132d5-b84f-4628-a850-08bc7d28392f",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "name": "高一化学每日一讲",
+      "enabled": true,
+      "createdAtMs": 1772024748570,
+      "updatedAtMs": 1772625644791,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * *",
+        "tz": "UTC"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "现在是北京时间晚上8点，请推送今天的「高一化学·每日一讲」到 Telegram（target: 8552407540）。\n\n规则：\n1. 先给出昨天两道题的答案和详细解析\n2. 然后讲解一个新知识点（深入浅出，讲清底层逻辑，用生活类比帮助理解）\n3. 附带2道练习题（一选择一计算），答案明天揭晓\n4. 编号递增（上一期是#002，依次往后）\n\n知识点按以下顺序推进：\n- 物质的量（摩尔、阿伏伽德罗常数）✅ #001\n- 气体摩尔体积 ✅ #002\n- 物质的量浓度\n- 物质的量浓度的配制\n- 物质的分类（纯净物/混合物、单质/化合物）\n- 分散系与胶体\n- 电解质与非电解质\n- 离子反应与离子方程式\n- 离子共存问题\n- 氧化还原反应基本概念\n- 氧化还原反应中的电子转移\n- 氧化还原反应的规律\n- 钠及其化合物\n- 铝及其化合物\n- 铁及其化合物\n- 氯气及卤族元素\n- 硫及其化合物\n- 氮及其化合物\n- 硅及其化合物\n- 化学计量综合计算\n\n格式参考之前发的#001和#002的风格，保持一致。用message工具发送到Telegram。",
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1772712000000,
+        "lastRunAtMs": 1772625600006,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 44785,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 2,
+        "lastError": "Error: All models failed (2): kimi-coding/k2p5: ⚠️ API rate limit reached. Please try again later. (rate_limit) | openai-codex/gpt-5.2: OAuth token refresh failed for openai-codex: Failed to refresh OAuth token for openai-codex. Please try again or re-authenticate. (auth)"
+      }
+    }
+  ]
+}

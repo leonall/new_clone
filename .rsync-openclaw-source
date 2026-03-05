@@ -1,0 +1,14 @@
+# OpenClaw Source - 同步排除规则
+# 排除大型/可重建目录
+node_modules/
+dist/
+# 排除日志和临时文件
+*.log
+npm-debug.log*
+.DS_Store
+# 保留关键文件
+!package.json
+!openclaw.mjs
+!README.md
+!CHANGELOG.md
+!LICENSE
