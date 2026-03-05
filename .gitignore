@@ -5,8 +5,6 @@
 workspace_backup_*
 
 # Large binary files
-*.xlsx
-*.pptx
 *.docx
 *.pdf
 
